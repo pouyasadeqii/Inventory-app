@@ -1,7 +1,33 @@
 import React, { useState } from "react";
 
-const Category = () => {
+const initialvalue = {
+  title: "",
+  description: "",
+};
+
+const Category = ({ setCategories }) => {
   const [show, setShow] = useState(false);
+  const [categoryFormData, setCategoryFormData] = useState(initialvalue);
+
+  const changeHandler = (e) => {
+    setCategoryFormData({
+      ...categoryFormData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const addNewCategoryHandler = (e) => {
+    e.preventDefault();
+    const newCategory = {
+      ...categoryFormData,
+      createdAt: new Date().toISOString(),
+      id: new Date().getTime(),
+    };
+
+    // ba prevState lazem nist kole data category ro pas bdim be in component
+    setCategories((prevState) => [...prevState, newCategory]);
+    setCategoryFormData(initialvalue);
+  };
 
   return (
     <section>
@@ -22,7 +48,9 @@ const Category = () => {
               className="bg-transparent rounded-xl border border-slate-500 text-slate-400"
               type="text"
               id="categoryTitle"
-              name="categoryTitle"
+              name="title"
+              value={categoryFormData.title}
+              onChange={changeHandler}
             />
           </div>
           <div>
@@ -30,13 +58,15 @@ const Category = () => {
               className="block mb-1 text-slate-400"
               htmlFor="categoryDescription"
             >
-              Title
+              Description
             </label>
             <textarea
               className="bg-transparent rounded-xl border border-slate-500 text-slate-400 w-full"
               type="text"
               id="categoryDescription"
-              name="categoryDescription"
+              name="description"
+              value={categoryFormData.description}
+              onChange={changeHandler}
             ></textarea>
           </div>
           <div className="flex items-center justify-between gap-x-2">
@@ -49,7 +79,10 @@ const Category = () => {
             >
               Cancel
             </button>
-            <button className="flex-1 bg-slate-500 text-slate-200 py-2 rounded-xl">
+            <button
+              className="flex-1 bg-slate-500 text-slate-200 py-2 rounded-xl"
+              onClick={addNewCategoryHandler}
+            >
               Add Category
             </button>
           </div>
