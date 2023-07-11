@@ -13,6 +13,14 @@ const App = () => {
   const [searchValue, setSearchValue] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
+  document.addEventListener("keydown", (e) => {
+    const firstWay = e.ctrlKey && e.key === "u";
+    const secondWay = e.ctrlKey && e.shiftKey && e.key === "I";
+    const thirdWay = e.key === "F12";
+
+    return (firstWay || secondWay || thirdWay) && e.preventDefault();
+  });
+
   useEffect(() => {
     let result = products;
     result = filterSearchTitle(result);
